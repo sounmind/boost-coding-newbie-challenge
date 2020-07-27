@@ -1,4 +1,5 @@
-# 이병욱님의 사전동기부여 영상
+# BoostCodingNewbieChallenge Week 3 Preview
+## 이병욱님의 사전동기부여 영상
 
 - 컴파일링
     - 프로그래밍 언어를 기계어로 바꿔주는 과정
