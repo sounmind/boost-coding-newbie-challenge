@@ -4,6 +4,19 @@
 #define QUEUE_LENGTH 10 + 1 // 배열 길이가 N이라면, N-1개 데이터가 채워졌을 때 꽉찬 것으로 간주
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+/*
+개선된 원형 큐
+큐가 텅 비었을 때
+    front와 rear가 같은 위치를 가리킨다.
+큐에 데이터를 넣을 때
+    rear를 다음 위치로 이동시킨 뒤 그곳에 데이터를 저장한다.
+큐에서 데이터를 뺄 때
+    front를 다음 위치로 옮긴다음, 그 위치에 있는 값을 반환한다.
+큐가 꽉 찼을 때
+    rear가 가리키는 위치의 다음 위치를 front가 가리킨다.
+*/
 
 typedef struct circularQueue // 원형 큐 자료형 구조체 선언
 {
@@ -30,11 +43,13 @@ int main(void) {
 
     while (1)
     {
-        printf("queue front: %i, queue rear: %i \n", queue.front, queue.rear);
+        // printf("queue front: %i, queue rear: %i \n", queue.front, queue.rear);
         printf(">>>> 명령 번호를 입력하세요.\n");
         printf(">>>> add(1), pop(2), display(3), quit(4) : ");
         scanf("%s", &order);
 
+        if (strlen(order) > 1) { printf("\n>>>> 명령이 너무 깁니다!\n\n"); continue; }                   // 입력 문자가 두 자리 이상이면 continue;
+        if (atoi(order) == 0) { printf("\n>>>> 명령이 해당 숫자(1~4)가 아닙니다!\n\n"); continue; }    // 입력 문자가 숫자가 아니면 continue;
 
         switch (atoi(order)) {
         case 1: // add
@@ -57,12 +72,12 @@ int main(void) {
         }
         case 4: // quit
         {
-            printf(">>>> 프로그램을 종료합니다.\n");
+            printf("\n>>>> 프로그램을 종료합니다.\n");
             return 0;
         }
         default:
         {
-            printf(">>>> 다시 제대로 명령 번호를 입력해주세요.\n");
+            printf("\n>>>> 다시 제대로 명령 번호를 입력해주세요.\n\n");
             break;
         }
         }
@@ -82,34 +97,30 @@ void queueInit(Queue* pointerQueue)
 int isQueueEmpty(Queue* pointerQueue)
 {
     if (pointerQueue->front == pointerQueue->rear)                          // 큐가 텅 비었다 == front와 rear가 동일한 위치를 가리킨다
-    {
-        return 1; // True 비었다
-    }
+    { return 1; }
     else
-    {
-        return 0; // False
-    }
+    { return 0; }
 }
 
 int queueNextPositionIndex(int position)
 {
     if (position == QUEUE_LENGTH - 1)                                       // 위치가 배열의 마지막 요소의 인덱스 값이라면
-        return 0;
+    { return 0; }
     else
-        return position + 1;
+    { return position + 1; }
 }
 
 void add(Queue* pointerQueue)
 {
     if (queueNextPositionIndex(pointerQueue->rear) == pointerQueue->front)  // 큐가 꽉 찼다면, (rear가 가리키는 곳의 다음 위치가 front가 가리키는 곳)
     {
-        printf("큐가 꽉 찼습니다!\n");
+        printf("\n큐가 꽉 찼습니다!\n");
         return;
     }
     pointerQueue->rear = queueNextPositionIndex(pointerQueue->rear);        // rear를 한 칸 이동
 
-    char *inputContents = malloc(sizeof(char)*100); // 됐다!
-    printf(">>>> 추가할 내용을 입력하세요 : ");
+    char *inputContents = malloc(sizeof(char)*100);
+    printf(">>>> 추가할 내용을 입력하세요 :            ");
     scanf("%s", inputContents);
 
     //printf("pointerQueue->rear = %d\n", pointerQueue->rear); // rear 출력
@@ -117,11 +128,7 @@ void add(Queue* pointerQueue)
 
     pointerQueue->queueArray[pointerQueue->rear] = inputContents;                    // rear가 가리키는 곳에 데이터 저장
 
-    for (int i = 1; i <= pointerQueue->rear; i++) {
-        printf("입력된 값 출력 %s \n", pointerQueue->queueArray[i]);
-    }
-
-    printf("정상 입력되었습니다...\n");
+    printf("\n정상 입력되었습니다...\n");
     return;
 }
 
@@ -129,7 +136,7 @@ void pop(Queue* pointerQueue)
 {
     if (isQueueEmpty(pointerQueue))
     {
-        printf("큐가 텅 비었습니다!\n");
+        printf("\n큐가 텅 비었습니다!\n");
         return;
     }
 
@@ -146,7 +153,7 @@ void display(Queue* pointerQueue)
         return;
     }
 
-    printf("display executed: \n");
+    printf("\n>>>>>>>> display executed <<<<<<<<\n");
     int i = pointerQueue->front;
 
     while (1)
