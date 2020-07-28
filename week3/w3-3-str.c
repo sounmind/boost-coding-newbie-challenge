@@ -15,7 +15,7 @@ typedef struct circularQueue // 원형 큐 자료형 구조체 선언
 void queueInit(Queue* pointerQueue);
 int isQueueEmpty(Queue* pointerQueue);
 int queueNextPositionIndex(int position);
-void add(Queue* pointerQueue, char data[]);
+void add(Queue* pointerQueue);
 void pop(Queue* pointerQueue);
 void display(Queue* pointerQueue);
 
@@ -26,7 +26,7 @@ int main(void) {
     queueInit(&queue);
 
     char order[100];
-    char inputContents[100];
+    // char inputContents[100];
 
     while (1)
     {
@@ -39,9 +39,9 @@ int main(void) {
         switch (atoi(order)) {
         case 1: // add
         {
-            printf(">>>> 추가할 내용을 입력하세요 : ");
-            scanf("%s", inputContents);
-            add(&queue, inputContents);
+            // printf(">>>> 추가할 내용을 입력하세요 : ");
+            // scanf("%s", inputContents);
+            add(&queue);
             break;
         }
 
@@ -99,7 +99,7 @@ int queueNextPositionIndex(int position)
         return position + 1;
 }
 
-void add(Queue* pointerQueue, char data[])
+void add(Queue* pointerQueue)
 {
     if (queueNextPositionIndex(pointerQueue->rear) == pointerQueue->front)  // 큐가 꽉 찼다면, (rear가 가리키는 곳의 다음 위치가 front가 가리키는 곳)
     {
@@ -108,10 +108,14 @@ void add(Queue* pointerQueue, char data[])
     }
     pointerQueue->rear = queueNextPositionIndex(pointerQueue->rear);        // rear를 한 칸 이동
 
+    char *inputContents = malloc(sizeof(char)*100); // 됐다!
+    printf(">>>> 추가할 내용을 입력하세요 : ");
+    scanf("%s", inputContents);
+
     //printf("pointerQueue->rear = %d\n", pointerQueue->rear); // rear 출력
     //printf("data = %s\n", data); // data 출력
 
-    pointerQueue->queueArray[pointerQueue->rear] = data;                    // rear가 가리키는 곳에 데이터 저장
+    pointerQueue->queueArray[pointerQueue->rear] = inputContents;                    // rear가 가리키는 곳에 데이터 저장
 
     for (int i = 1; i <= pointerQueue->rear; i++) {
         printf("입력된 값 출력 %s \n", pointerQueue->queueArray[i]);
