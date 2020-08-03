@@ -12,7 +12,7 @@ void print_array(int array[], int length_of_array);
 
 int main(void)
 {
-    const int LENGTH_OF_ARRAY = 6;
+    const int LENGTH_OF_ARRAY = 4;
 
     // 다리 건너기 전 사람들 정렬되어 있다고 가정 // 다리 건너 장소 0으로 초기화
     
@@ -22,9 +22,12 @@ int main(void)
     // int here[LENGTH_OF_ARRAY] = {1, 2, 3, 4, 5}; 
     // int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0, 0};
 
-    int here[LENGTH_OF_ARRAY] = {1, 2, 3, 4, 5, 6}; 
-    int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0, 0, 0};
+    // int here[LENGTH_OF_ARRAY] = {1, 2, 3, 4, 5, 6}; 
+    // int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0, 0, 0};
 
+    int here[LENGTH_OF_ARRAY] = {1, 2, 5, 10}; 
+    int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0};
+    
     // int here[LENGTH_OF_ARRAY] = {1, 2, 3}; 
     // int there[LENGTH_OF_ARRAY] = {0, 0, 0};
 
@@ -43,9 +46,8 @@ int main(void)
     return 0;
 }
 
-void cross(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY)   // 재귀가 포함 되어 있는 다리 건너는 함수
+void cross(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY)                   // 재귀가 포함 되어 있는 다리 건너는 함수
 {
-    print_array(here, LENGTH_OF_ARRAY); print_array(there, LENGTH_OF_ARRAY); printf("\n\n");
     if(left_people_count==0)
     {
         printf("아무도 없었다고 합니다.");
