@@ -1,199 +1,79 @@
-#include <stdio.h>
+#include <stdio.h> // 문제 설명은 아래에
 
-int time_count = 0; // 총 걸린 시간 전역 변수 선언 
+int time = 0;
+const int TOTAL_PEOPLE = 3;
+int here[TOTAL_PEOPLE+1] = {0, 1, 2, 3};    // 코드 가독성을 위해 배열 크기 선언 및 초기화 시, 크기를 1 추가하고 그 자리에 0을 초기화.
 
-void cross(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY);
-void go_and_back(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY);
-void cross_who_fast(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY);
-void return_from_bridge(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY);
-void cross_who_slow(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY);
-void bubble_sort(int array_of_number[], int size_of_array);
-void print_array(int array[], int length_of_array);
+void bridge_cross(int person_fast, int person_slow)
+{
+    time += here[person_slow];
+    printf("%d, %d\n", here[person_fast], here[person_slow]);
+}
+
+void bridge_return(int person)
+{
+    time += here[person];
+    printf("%d\n", here[person]);
+}
+
+void cross(int number_of_people)
+{
+    if(number_of_people==1)
+    {   
+        bridge_return(2);   // 한 명일 때는 다리를 오고 감에 구분이 없음
+    }
+    if(number_of_people==2)
+    {
+        bridge_cross(1, 2);
+    }
+    if(number_of_people==3)
+    {
+        cross(2);          
+        bridge_return(1);
+        bridge_cross(1, 3); 
+    }
+    if(number_of_people>=4)
+    {
+        cross(2);
+        bridge_return(1);
+        bridge_cross(number_of_people-1, number_of_people);
+        bridge_return(2);
+        cross(number_of_people-2);
+    }
+}
 
 int main(void)
 {
-    const int LENGTH_OF_ARRAY = 4;
-
-    // 다리 건너기 전 사람들 정렬되어 있다고 가정 // 다리 건너 장소 0으로 초기화
-    
-    // int here[LENGTH_OF_ARRAY] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
-    // int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    // int here[LENGTH_OF_ARRAY] = {1, 2, 3, 4, 5}; 
-    // int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0, 0};
-
-    // int here[LENGTH_OF_ARRAY] = {1, 2, 3, 4, 5, 6}; 
-    // int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0, 0, 0};
-
-    int here[LENGTH_OF_ARRAY] = {1, 2, 5, 10}; 
-    int there[LENGTH_OF_ARRAY] = {0, 0, 0, 0};
-    
-    // int here[LENGTH_OF_ARRAY] = {1, 2, 3}; 
-    // int there[LENGTH_OF_ARRAY] = {0, 0, 0};
-
-    // int here[LENGTH_OF_ARRAY] = {1, 2}; 
-    // int there[LENGTH_OF_ARRAY] = {0, 0};
-
-    // int here[LENGTH_OF_ARRAY] = {1}; 
-    // int there[LENGTH_OF_ARRAY] = {0};
-
-    int left_people_count = LENGTH_OF_ARRAY;                                            // 좌측에 남아 있는 사람들, 점점 줄어든다
-    cross(here, there, left_people_count, LENGTH_OF_ARRAY);                             // 다리를 건너보자!
-
-    printf("총 걸린 시간 %d", time_count);
-
-
+    cross(TOTAL_PEOPLE);
+    printf("%d\n", time);
     return 0;
 }
 
-void cross(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY)                   // 재귀가 포함 되어 있는 다리 건너는 함수
-{
-    if(left_people_count==0)
-    {
-        printf("아무도 없었다고 합니다.");
-        return;
-    }
-    if(left_people_count==1)
-    {
-        print_array(here, LENGTH_OF_ARRAY); print_array(there, LENGTH_OF_ARRAY); printf("\n\n");
-        there[0] = here[0];
-        printf("%d , 건너다", here[0]);
-        here[0] = 0;
-        print_array(here, LENGTH_OF_ARRAY); print_array(there, LENGTH_OF_ARRAY); printf("\n\n");
-        return;
-    }
-    if(left_people_count==2)
-    {
-        cross_who_fast(here, there, left_people_count, LENGTH_OF_ARRAY);
-        return;
-    }
-    if(left_people_count==3)
-    {
-        cross_who_fast(here, there, left_people_count, LENGTH_OF_ARRAY);
-        return_from_bridge(here, there, left_people_count, LENGTH_OF_ARRAY);
-        cross_who_slow(here, there, left_people_count, LENGTH_OF_ARRAY);
-        return;
-    }
-    if(left_people_count>=4)
-    {
-        go_and_back(here, there, left_people_count, LENGTH_OF_ARRAY);
-        cross(here, there, left_people_count-2, LENGTH_OF_ARRAY);
-    }
-}
+/*
 
-void go_and_back(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY)             // 오고 가고 하는 함수
-{
-    cross_who_fast(here, there, left_people_count, LENGTH_OF_ARRAY);                                    // 빠른 사람 2명 건넘
-    return_from_bridge(here, there, left_people_count, LENGTH_OF_ARRAY);                                // 빠른 사람 1명 돌아옴
-    cross_who_slow(here, there, left_people_count, LENGTH_OF_ARRAY);                                    // 느린 사람 2명 건넘
-    return_from_bridge(here, there, left_people_count, LENGTH_OF_ARRAY);                                // 빠른 사람 1명 돌아옴
-}
+1. 미션 제목
+최단 시간에 다리건너기
 
-void cross_who_fast(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY)          // 왼쪽의 빠른 사람 2명이 건넘
-{
-    int count = 0;
+2. 지시문
+N명의 사람들로 구성된 한 그룹이 밤중에 다리를 건너려고 합니다. 한 번에 최대 두 명 까지만 다리를 건널 수 있으며 다리 위를 지나가는 사람들은 반드시 손전등을 가지고 가야 합니다. n명의 사람들한테는 손전등이 한 개밖에 없기 때문에 남아 있는 사람들이 다리를 건너려면 어떤 식으로든 손전등을 가지고 다시 다리를 건너지 않은 사람들이 있는 곳으로 돌아가는 일을 해야합니다. 사람마다 다리를 건너는 속도가 다른데, 그룹의 속도는 가장 느린 구성원의 속도에 따라 결정됩니다. 가장 짧은 시간 안에 n명이 모두 다리를 건널 수 있는 방법과 그 시간을 출력하는 프로그램을 작성해봅시다.
+입력으로 첫 줄에는 n이 입력되며 그 다음 줄부터 n개의 줄에 걸쳐서 각 사람들이 다리를 건너는 시간이 입력됩니다. 입력은 100명을 넘기지 않습니다.
+출력은 맨 첫 줄에는 n명의 사람들이 모두 다리를 건너는데 걸리는 총 시간을 출력하고, 그 다음줄부터는 그 과정을 출력하면 됩니다. 이 때 각 줄에는 정수가 하나 또는 두 개가 들어가는데, 이 정수는 어떤 사람들이 다리를 건너가는지를 나타냅니다. 각 사람은 그 사람이 건너가는데 걸리는 시간으로 표시하며, 건너가고 오는 순서대로 출력해야 합니다. 최소 시간을 달성하는 방법이 여러가지가 있을 경우 그 중 아무 방법이나 출력해도 괜찮습니다. 완전한 프로그램을 작성하기 어려운 경우에는 pseudo code를 작성해도 좋습니다. 다만 이 경우에는 최대한 자세히 적어야 합니다. 숫자를 입력받는 부분은 따로 구현하지 않고 프로그램 내부에서 따로 선언하는 것으로 가정합니다.
 
-    for(int i=0; i<LENGTH_OF_ARRAY; i++)
-    {
-        if(here[i]==0)
-        {
-            continue;
-        }
-        else
-        {
-            printf("%2d ", here[i]);
-            there[i] = here[i];
-            here[i] = 0;
-            count++;
-        }
+예)
+입력값:
+4
+1
+2
+5
+10
 
-        if(count==2)
-        {
-            time_count += there[i]; // 항상 두번째 값이 크기 때문에 걸린 시간에 대입
-            printf(", 건너다\n");
-            print_array(here, LENGTH_OF_ARRAY); print_array(there, LENGTH_OF_ARRAY); printf("\n\n");
-            break;
-        }
-    }
-}
 
-void return_from_bridge(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY)      // 오른쪽의 빠른 사람 1명이 돌아옴
-{
-    for(int i=0; i<LENGTH_OF_ARRAY; i++)
-    {
-        if(there[i]==0)
-        {
-            continue;
-        }
-        else
-        {
-            printf("%2d , 돌아오다\n", there[i]);
-            here[i] = there[i];
-            time_count += there[i];
-            there[i] = 0;
-            print_array(here, LENGTH_OF_ARRAY); print_array(there, LENGTH_OF_ARRAY); printf("\n\n");
-            break;
-        }
-    }
-}
+출력값:
+17
+1 2
+1
+5 10
+2
+1 2
 
-void cross_who_slow(int here[], int there[], int left_people_count, const int LENGTH_OF_ARRAY)          // 느린 사람 두 명이 다리를 건넘
-{
-    int count, max_time = 0;
-
-    for(int i=LENGTH_OF_ARRAY-1; i>=0; i--)
-    {
-        if(here[i]==0)
-        {
-            continue;
-        }
-        else
-        {
-            if(max_time < here[i])
-            {
-                max_time = here[i];
-            }
-            printf("%2d ", here[i]);
-            there[i] = here[i];
-            here[i] = 0;
-            count++;
-        }
-
-        if(count==2)
-        {
-            time_count += max_time;
-            printf(", 건너다 \n");
-            print_array(here, LENGTH_OF_ARRAY); print_array(there, LENGTH_OF_ARRAY); printf("\n\n");
-            break;
-        }   
-    }
-}
-
-void print_array(int array[], int length_of_array)                                                      // 배열을 출력
-{
-    printf("| ");
-    for(int i=0; i<length_of_array; i++)
-    {
-        printf("%d ", array[i]);
-    }
-    printf("end |");
-}
-
-void bubble_sort(int array_of_number[], int size_of_array)                                              // 간단한 정렬 (현재 사용X)
-{
-    int temp = 0;
-    for(int i=0; i < size_of_array - 1; i++)
-    {
-        for(int j=0; j < size_of_array - i - 1; j++)
-        {
-            if(array_of_number[j] > array_of_number[j+1])
-            {
-                temp = array_of_number[j];
-                array_of_number[j] = array_of_number[j+1];
-                array_of_number[j+1] = temp;
-            }
-        }
-    }
-    printf("sort completed!\n");
-    return;    
-}
+*/
