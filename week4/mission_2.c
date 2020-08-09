@@ -13,9 +13,9 @@ int main(void)
     // 친구의 숫자는 매번 다르고, 집 위치는 중복이 있을 수 있음
     
     // 테스트 케이스
-    // int location_friend[5] = {1, 3, 5, 7, 9};
-    // int location_friend[9] = {1, 3, 5, 7, 9, 123, 122, 12, 2};
-    // int location_friend[7] = {2, 3, 1, 4, 6, 7, 9};                                  // 무조건 거리 평균이 소수점 이하로 나오는 경우
+    int location_friend[5] = {1, 3, 5, 7, 9};
+    int location_friend[9] = {1, 3, 5, 7, 9, 123, 122, 12, 2};
+    int location_friend[7] = {2, 3, 1, 4, 6, 7, 9};                                  // 무조건 거리 평균이 소수점 이하로 나오는 경우
     int location_friend[6] = {5, 2, 3, 6, 4, 1};                                        // 평균이 '3.5'라서 3과 4 모두 거리 합이 같은 경우
 
     int length_of_array = sizeof(location_friend)/sizeof(int);
