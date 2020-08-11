@@ -13,9 +13,11 @@ int main(void)
 
     int lengthOfArrColumn = sizeof(arr[0])/sizeof(int);
     int lengthOfArrRow =  sizeof(arr)/sizeof(int)/lengthOfArrColumn;
+                            // sizeof(arr) / sizeof(arr[0]) == ?? ?? / ? ?? ??
 
     printf("column length: %d\n", lengthOfArrColumn);
     printf("row length: %d\n", lengthOfArrRow);
+    printf("wj row length: %d\n", sizeof(arr) / sizeof(arr[0]));
     
     /*
     print array arr backward(in reverse order)
