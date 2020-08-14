@@ -21,7 +21,7 @@ For example:
 
 ## 2. What's difference with strcpy() and strncpy()? (+ what's your recommendation and why?)
 
-1. strcpy( ) function copies whole content of one string into another string. Whereas, strncpy( ) function copies portion of contents of one string into another string.
+1. strcpy() function copies whole content of one string into another string. Whereas, strncpy() function copies portion of contents of one string into another string.
 2. If destination string length is less than source string, entire/specified source string value won¡¯t be copied into destination string in both cases
 ### Recomendation
 It depends on your purpose. If you want to copy part of the string, you should use strncpy. If you need whole string you should use strcpy.
