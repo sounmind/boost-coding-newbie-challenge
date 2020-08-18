@@ -25,8 +25,8 @@ void push(StackNode** root, int data) {
         *root = createStackNode(data);
     } else {
         StackNode *newNode = createStackNode(data); // 데이터 저장된 새 노드 생성
-        newNode -> next = *root; // 새 노드가 최근에 추가된 노드를 가리킴
-        *root  = newNode; // root가 새 노드를 가리킴
+        newNode -> next = *root;                    // 새 노드가 최근에 추가된 노드를 가리킴
+        *root  = newNode;                           // root가 새 노드를 가리킴
     }
     printf("%d pushed to stack\n", data);
 }
@@ -37,10 +37,10 @@ int pop(StackNode** root) {
         return -9999;
     }
     StackNode * temp;
-    temp = *root; // 삭제할 노드의 주소 값을 임시로 저장
+    temp = *root;               // 삭제할 노드의 주소 값을 임시로 저장
     int popped = (*root)->data; // 삭제할 노드의 데이터를 저장
-    *root = (*root)->next; // 삭제할 노드의 다음 노드를 root가 가리킴
-    free(temp); // 원래 root가 가리키던 노드 삭제
+    *root = (*root)->next;      // 삭제할 노드의 다음 노드를 root가 가리킴
+    free(temp);                 // 원래 root가 가리키던 노드 삭제
 return popped;
 }
 
