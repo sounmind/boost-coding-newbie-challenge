@@ -10,18 +10,18 @@ typedef struct node {
 } Node;
 
 void append(Node** head, int data) {
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    newNode -> data = data;     // 새로운 노드에 데이터 삽입
-    newNode -> next = *head;    // 새로운 노드가 head가 가리키는 것을 가리킴
-    *head = newNode;            // head가 새로운 노드를 가리킴
-    printf("%d is appended\n", data);
+    Node *new_node = (Node*)malloc(sizeof(Node));
+    new_node -> data = data;     // 새로운 노드에 데이터 삽입
+    new_node -> next = *head;    // 새로운 노드가 head가 가리키는 것을 가리킴
+    *head = new_node;            // head가 새로운 노드를 가리킴
+    printf("%2d is appended\n", data);
     return;
 }
 
-int getKthNodeFromLast (Node* head, int k) {
+int get_kth_node_from_last (Node* head, int k) {
     Node* pointer = head;           // 임시 포인터 변수가 head가 가리키는 것을 가리킴
     int count = 0;
-    int KthData = 9999;
+    int kth_data = 9999;
     while(1) {
         count++;
         if(count == k) {            // k번째 일 때 임시 포인터 변수가 가리키는 노드의 값을 반환
@@ -29,15 +29,16 @@ int getKthNodeFromLast (Node* head, int k) {
         }
         pointer = pointer -> next;  // 임시 포인터 변수가 다음 노드를 가리킴
     }
-    return KthData;
+    return kth_data;
 }
 
-void printReverse(Node* head) {     // 연결리스트를 거꾸로 출력하는 재귀 함수
+void print_reverse(Node* head) {     // 연결리스트를 거꾸로 출력하는 재귀 함수
     if(head == NULL) {
+        printf("|");
         return;
     }
-    printReverse(head -> next);
-    printf("%d ", head -> data);
+    print_reverse(head -> next);
+    printf(" %d |", head -> data);
 }
 
 int main() {
@@ -49,7 +50,11 @@ int main() {
     append(&head, 14);
     append(&head, 5);
 
-    printReverse(head);
+    print_reverse(head);
 
-    printf("\n%dth last node is %d\n", 2, getKthNodeFromLast(head, 2));
+    printf("\n%dth last node is %d", 1, get_kth_node_from_last(head, 1));
+    printf("\n%dth last node is %d", 2, get_kth_node_from_last(head, 2));
+    printf("\n%dth last node is %d", 3, get_kth_node_from_last(head, 3));
+    printf("\n%dth last node is %d", 4, get_kth_node_from_last(head, 4));
+    printf("\n%dth last node is %d", 5, get_kth_node_from_last(head, 5));
 }
